@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" href="https://media.discordapp.net/attachments/1110565562616127620/1284222150047432755/rgrthjtyjtyuj.jpg?ex=66e5d894&is=66e48714&hm=a88413b7a265fd3aa1578c21a4db5a90dd714820f7ae6994f4315a9d3cced184&=&format=webp" type="image/x-icon">
+    <title>Alexandercwulff - beats</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .glitch-text {
+            font-size: 2em;
+            color: white;
+            text-align: center;
+            margin-top: 20px;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000; /* Ensures it's on top */
+        }
+
+        .image-container {
+            perspective: 800px;
+            width: 360px;
+            height: 540px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .rotating-image {
+            width: 100%;
+            height: auto;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease-out;
+        }
+
+        .scroll-container {
+            padding-bottom: 100px; /* Add space for bottom buttons */
+        }
+
+        .section {
+            display: flex;
+            align-items: center;
+            margin: 50px 0; /* Reduced margin for better fit */
+            padding: 0 20px; /* Added padding for better spacing */
+        }
+
+        .image-section {
+            flex-shrink: 0;
+            width: 360px; /* Fixed width for images */
+            margin-right: 20px;
+        }
+
+        .text-section {
+            flex-grow: 1; /* Allows text section to use remaining space */
+        }
+
+        .text-section h1 {
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .text-section p {
+            font-size: 1.2em;
+        }
+
+        .text-section button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: white;
+            color: black;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .follow-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: black;
+            border: 2px solid white;
+            cursor: pointer;
+            z-index: 2000; /* Ensures it's on top */
+            transition: transform 0.3s ease;
+        }
+
+        .follow-btn:active {
+            transform: translateX(-50%) scale(0.9);
+        }
+
+        .menu {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background-color: black;
+            border-radius: 10px;
+            z-index: 2000;
+            padding: 20px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .menu.active {
+            display: block;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .menu-button {
+            display: block;
+            margin: 10px 0;
+            padding: 10px 20px;
+            background-color: white;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .bottom-buttons {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            padding: 10px;
+            background-color: black;
+            width: 100%;
+            justify-content: center;
+            z-index: 1000; /* Ensures it's on top */
+        }
+
+        .bottom-buttons a {
+            text-decoration: none;
+            color: white;
+            font-size: 1em;
+            position: relative;
+            padding: 5px;
+        }
+
+        .bottom-buttons a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        .bottom-buttons a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .bottom-buttons a:not(:hover)::after {
+            width: 0;
+            left: 100%;
+        }
+
+        /* 3D Rotation for 300x300 images */
+        .image-300 {
+            width: 100%; /* Adjusted to fit container width */
+            height: auto;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            cursor: pointer;
+        }
+
+        .image-300:hover {
+            opacity: 0.75;
+            transform: rotateX(15deg) rotateY(15deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="glitch-text" id="glitch-text"></div>
+        <div class="image-container" id="image-container">
+            <img src="https://media.discordapp.net/attachments/1110565562616127620/1284211508712046634/Mad_guy_rlly.jpg?ex=66e5ceab&is=66e47d2b&hm=348b28334863348b5da46ce0f9a9b1d3bce8ce17935f82f5eac5e448294c1fff&=&format=webp&width=702&height=1248"
+                alt="3D Image" class="rotating-image">
+        </div>
+    </div>
+
+    <div class="scroll-container">
+        <div class="section">
+            <div class="image-section">
+                <img src="https://media.discordapp.net/attachments/1110565562616127620/1284222758661914625/pic33.jpg?ex=66e5d925&is=66e487a5&hm=3f8ae04130f10a6fcee096c1b724e6e9779aae75a80cd4bcfb87f30cafc1f731&=&format=webp"
+                    alt="Image 1" class="image-300">
+            </div>
+            <div class="text-section">
+                <h1>Hellspike</h1>
+                <p>This pack includes 808s and claps</p>
+                <button>Buy</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="image-section">
+                <img src="https://media.discordapp.net/attachments/1110565562616127620/1284222758036963348/pic11.jpg?ex=66e5d925&is=66e487a5&hm=942065e5cb09dfe3b13e033e1a9a7e6a17170204f4b59be5e68fa4048802528c&=&format=webp"
+                    alt="Image 2" class="image-300">
+            </div>
+            <div class="text-section">
+                <h1>Astro Pack</h1>
+                <p>This pack includes 808s and claps</p>
+                <button>Buy</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="image-section">
+                <img src="https://media.discordapp.net/attachments/1110565562616127620/1284222758313660487/pic22.jpg?ex=66e5d925&is=66e487a5&hm=ee2bf2fbb1df534fa114c4a4a6d626b4725bde7b1e542929b0cb70607d576283&=&format=webp"
+                    alt="Image 3" class="image-300">
+            </div>
+            <div class="text-section">
+                <h1>Hellspike deluxe</h1>
+                <p>This pack includes 808s and claps</p>
+                <button>Buy</button>
+            </div>
+        </div>
+    </div>
+
+    <button class="follow-btn" id="follow-btn"></button>
+
+    <div class="menu" id="menu">
+        <button class="menu-button">Shop</button>
+        <button class="menu-button">Album</button>
+        <button class="menu-button">About</button>
+    </div>
+
+    <div class="bottom-buttons">
+        <a href="#">Terms of Service</a>
+        <a href="#">Contact</a>
+        <a href="#">About</a>
+        <a href="#">Privacy</a>
+    </div>
+
+    <script>
+        // Glitch text effect
+        const glitchText = document.getElementById('glitch-text');
+        const targetText = 'Alexandercwulff';
+        let currentIndex = 0;
+        const glitchCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:,.<>?';
+
+        function glitch() {
+            if (currentIndex < targetText.length) {
+                const randomChar = glitchCharacters[Math.floor(Math.random() * glitchCharacters.length)];
+                glitchText.textContent = targetText.slice(0, currentIndex) + randomChar;
+                setTimeout(() => {
+                    glitchText.textContent = targetText.slice(0, currentIndex + 1);
+                    currentIndex++;
+                    glitch();
+                }, Math.random() * 100);
+            }
+        }
+
+        glitch();
+
+        // 3D Image Rotation
+        const rotatingImage = document.querySelector('.rotating-image');
+
+        document.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 15;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 15;
+            rotatingImage.style.transform = `rotateX(${yAxis}deg) rotateY(${xAxis}deg)`;
+        });
+
+        document.addEventListener('mouseleave', () => {
+            rotatingImage.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        });
+
+        // Image hover effect with audio visualization
+        document.querySelectorAll('.image-300').forEach((img, index) => {
+            const audio = new Audio('cookin.mp3'); // Use the local audio file
+            const visualization = document.getElementById(`visualization${index + 1}`);
+            const canvas = visualization.querySelector('canvas');
+            const canvasCtx = canvas.getContext('2d');
+            const analyser = new (window.AudioContext || window.webkitAudioContext)().createAnalyser();
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const source = audioContext.createMediaElementSource(audio);
+            source.connect(analyser);
+            analyser.connect(audioContext.destination);
+
+            img.addEventListener('mouseover', () => {
+                audio.play();
+                visualization.style.display = 'block';
+                canvas.width = visualization.clientWidth;
+                canvas.height = visualization.clientHeight;
+
+                function renderFrame() {
+                    requestAnimationFrame(renderFrame);
+                    const dataArray = new Uint8Array(analyser.frequencyBinCount);
+                    analyser.getByteFrequencyData(dataArray);
+                    canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+                    for (let i = 0; i < dataArray.length; i++) {
+                        const barHeight = dataArray[i] / 2;
+                        canvasCtx.fillStyle = 'white';
+                        canvasCtx.fillRect(i * 3, canvas.height - barHeight, 2, barHeight);
+                    }
+                }
+
+                renderFrame();
+            });
+
+            img.addEventListener('mouseout', () => {
+                audio.pause();
+                visualization.style.display = 'none';
+            });
+        });
+
+        // Menu toggle and animation
+        const followBtn = document.getElementById('follow-btn');
+        const menu = document.getElementById('menu');
+
+        followBtn.addEventListener('click', () => {
+            followBtn.classList.toggle('active');
+            menu.classList.toggle('active');
+            if (menu.classList.contains('active')) {
+                menu.style.display = 'block';
+                menu.style.opacity = '1';
+            } else {
+                menu.style.display = 'none';
+                menu.style.opacity = '0';
+            }
+        });
+    </script>
+</body>
+</html>
